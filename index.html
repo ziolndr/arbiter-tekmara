@@ -124,7 +124,7 @@
 
         /* Main Layout */
         .main {
-            height: calc(100vh - 56px);
+            min-height: calc(100vh - 56px);
             display: grid;
             grid-template-columns: 340px 1fr 400px;
         }
@@ -1036,15 +1036,27 @@
                 border-bottom: 2px solid var(--border);
                 max-height: none;
                 overflow-y: visible;
+                height: auto;
             }
 
             .center-panel {
                 border-right: none;
                 border-bottom: 2px solid var(--border);
+                min-height: 50vh;
             }
 
             .right-panel {
                 border-right: none;
+                min-height: 50vh;
+            }
+
+            body {
+                overflow-y: auto;
+            }
+
+            .main {
+                height: auto;
+                min-height: 100vh;
             }
 
             .header {
