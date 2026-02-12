@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARBITER | Aquarius Decision Support</title>
     <style>
         * {
@@ -32,7 +32,14 @@
             color: var(--white);
             font-size: 13px;
             line-height: 1.5;
-            overflow: hidden;
+        }
+
+        @media (max-width: 1024px) {
+            body {
+                overflow-y: auto;
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch;
+            }
         }
 
         /* Header */
