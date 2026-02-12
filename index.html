@@ -124,9 +124,27 @@
 
         /* Main Layout */
         .main {
-            min-height: calc(100vh - 56px);
+            height: calc(100vh - 56px);
             display: grid;
             grid-template-columns: 340px 1fr 400px;
+        }
+
+        .container {
+            display: contents;
+        }
+
+        .left-panel {
+            overflow-y: auto;
+            border-right: 2px solid var(--border);
+        }
+
+        .center-panel {
+            overflow-y: auto;
+            border-right: 2px solid var(--border);
+        }
+
+        .right-panel {
+            overflow-y: auto;
         }
 
         .panel {
@@ -1026,9 +1044,15 @@
 
         /* Mobile Responsive */
         @media (max-width: 1024px) {
+            .main {
+                height: auto;
+                min-height: 100vh;
+            }
+
             .container {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto auto;
+                display: grid;
             }
 
             .left-panel {
@@ -1043,20 +1067,15 @@
                 border-right: none;
                 border-bottom: 2px solid var(--border);
                 min-height: 50vh;
+                overflow-y: visible;
+                height: auto;
             }
 
             .right-panel {
                 border-right: none;
                 min-height: 50vh;
-            }
-
-            body {
-                overflow-y: auto;
-            }
-
-            .main {
+                overflow-y: visible;
                 height: auto;
-                min-height: 100vh;
             }
 
             .header {
