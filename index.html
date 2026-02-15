@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ARBITER | Aquarius Decision Support</title>
     <style>
         * {
@@ -24,6 +24,7 @@
             --red: #ef4444;
             --blue: #3b82f6;
             --cyan: #06b6d4;
+            --purple: #8b5cf6;
         }
 
         body {
@@ -32,14 +33,7 @@
             color: var(--white);
             font-size: 13px;
             line-height: 1.5;
-        }
-
-        @media (max-width: 1024px) {
-            body {
-                overflow-y: auto;
-                overflow-x: hidden;
-                -webkit-overflow-scrolling: touch;
-            }
+            overflow: hidden;
         }
 
         /* Header */
@@ -1320,6 +1314,9 @@
             <button class="mode-btn" id="modeSmartLab" onclick="switchMode('smartlab')">
                 SMART LAB
             </button>
+            <button class="mode-btn" id="modeHypothesis" onclick="switchMode('hypothesis')">
+                HYPOTHESIS LAB
+            </button>
         </div>
         
         <div class="status-bar" id="statusBar">
@@ -1683,6 +1680,138 @@
             </div>
             <!-- END SMART LAB MODE CONTENT -->
 
+            <!-- HYPOTHESIS LAB MODE CONTENT -->
+            <div id="hypothesisConfig" style="display: none;">
+                <!-- Observation Data -->
+                <div class="section">
+                    <div class="section-title">Observation Data</div>
+                    <div class="sensor-grid">
+                        <div class="sensor-row">
+                            <div class="sensor-label">Acoustic Frequency</div>
+                            <div class="sensor-controls">
+                                <button class="stepper-btn" onclick="adjustHypothesisSensor('frequency', -0.1)">−</button>
+                                <div class="stepper-value">
+                                    <span id="frequency-value">1.2</span><span class="sensor-unit">kHz</span>
+                                </div>
+                                <button class="stepper-btn" onclick="adjustHypothesisSensor('frequency', 0.1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="sensor-row">
+                            <div class="sensor-label">Pattern Interval</div>
+                            <div class="sensor-controls">
+                                <button class="stepper-btn" onclick="adjustHypothesisSensor('interval', -0.1)">−</button>
+                                <div class="stepper-value">
+                                    <span id="interval-value">0.3-0.8-0.3</span><span class="sensor-unit">s</span>
+                                </div>
+                                <button class="stepper-btn" onclick="adjustHypothesisSensor('interval', 0.1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="sensor-row">
+                            <div class="sensor-label">Occurrence Rate</div>
+                            <div class="sensor-controls">
+                                <button class="stepper-btn" onclick="adjustHypothesisSensor('occurrences', -1)">−</button>
+                                <div class="stepper-value">
+                                    <span id="occurrences-value">3</span><span class="sensor-unit">/day</span>
+                                </div>
+                                <button class="stepper-btn" onclick="adjustHypothesisSensor('occurrences', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="sensor-row">
+                            <div class="sensor-label">Tidal Correlation</div>
+                            <div class="sensor-controls">
+                                <button class="stepper-btn" onclick="adjustHypothesisSensor('tidal', -5)">−</button>
+                                <div class="stepper-value">
+                                    <span id="tidal-value">94</span><span class="sensor-unit">%</span>
+                                </div>
+                                <button class="stepper-btn" onclick="adjustHypothesisSensor('tidal', 5)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Observed Correlations -->
+                <div class="section">
+                    <div class="section-title">Observed Correlations</div>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="hyp-ctx-tidal" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Tidal cycle correlation (94%)</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="hyp-ctx-bio" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Bioluminescence spike during pattern</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="hyp-ctx-chemistry">
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Water chemistry unchanged</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="hyp-ctx-equipment" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">No equipment malfunction detected</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="hyp-ctx-precision" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Mathematical precision in intervals</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Research Perspectives -->
+                <div class="section">
+                    <div class="section-title">Research Perspectives</div>
+                    
+                    <label class="checkbox-item" style="background: var(--black); border: 1px solid var(--blue); margin-bottom: 12px;">
+                        <input type="checkbox" id="selectAllHypothesisPerspectives" checked onchange="toggleAllHypothesisPerspectives()">
+                        <div class="checkbox"></div>
+                        <span class="checkbox-label" style="font-weight: 600;">All Perspectives</span>
+                    </label>
+                    
+                    <div class="checkbox-group" id="hypothesisRoles">
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="hypothesis-perspective-checkbox" data-role="hyp-marine-bio" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Marine Biologist</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="hypothesis-perspective-checkbox" data-role="hyp-acoustic" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Acoustic Ecologist</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="hypothesis-perspective-checkbox" data-role="hyp-geologist" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Geological Oceanographer</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="hypothesis-perspective-checkbox" data-role="hyp-astrobio" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Astrobiology Researcher</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="hypothesis-perspective-checkbox" data-role="hyp-engineer" checked>
+                            <div class="checkbox"></div>
+                            <span class="checkbox-label">Equipment Systems Engineer</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Run Analysis -->
+                <div class="section">
+                    <button class="btn" onclick="runAnalysis()" id="analyzeBtn3">
+                        Test Hypotheses
+                    </button>
+                </div>
+            </div>
+            <!-- END HYPOTHESIS LAB MODE CONTENT -->
+
         </div>
 
         <!-- CENTER PANEL: Recommendations -->
@@ -1893,7 +2022,7 @@
         const ARBITER_API = 'https://api.arbiter.traut.ai/public/compare';
 
         // Current mode
-        let currentMode = 'aquarius'; // 'aquarius' or 'smartlab'
+        let currentMode = 'aquarius'; // 'aquarius', 'smartlab', or 'hypothesis'
 
         // Sensor state (Aquarius mode)
         let sensors = {
@@ -1909,6 +2038,14 @@
             hydrocarbons: 12,
             wireless: 94,
             auvFleet: 3
+        };
+
+        // Hypothesis Lab sensor state
+        let hypothesisSensors = {
+            frequency: 1.2,
+            interval: '0.3-0.8-0.3',
+            occurrences: 3,
+            tidal: 94
         };
 
         // Candidates - loaded from scenario template
@@ -1986,6 +2123,32 @@
                 name: 'Marine Sanctuary Protection',
                 icon: '●',
                 color: '#06b6d4'
+            },
+            // Hypothesis Lab roles
+            'hyp-marine-bio': {
+                name: 'Marine Biologist',
+                icon: '●',
+                color: '#10b981'
+            },
+            'hyp-acoustic': {
+                name: 'Acoustic Ecologist',
+                icon: '●',
+                color: '#06b6d4'
+            },
+            'hyp-geologist': {
+                name: 'Geological Oceanographer',
+                icon: '●',
+                color: '#f59e0b'
+            },
+            'hyp-astrobio': {
+                name: 'Astrobiology Researcher',
+                icon: '●',
+                color: '#8b5cf6'
+            },
+            'hyp-engineer': {
+                name: 'Equipment Systems Engineer',
+                icon: '●',
+                color: '#ef4444'
             }
         };
 
@@ -2036,6 +2199,18 @@
                     'Emergency beacon activation - notify NOAA and Coast Guard of sanctuary breach, transmit vessel coordinates',
                     'Autonomous survey mode - deploy AUV fleet to map pollution plume extent and identify source coordinates',
                     'Reduce power consumption - wireless degradation indicates storm approaching, conserve for critical systems'
+                ]
+            },
+            // Hypothesis Lab - Unknown phenomenon investigation
+            'hypothesis-lab': {
+                candidates: [
+                    'Cetacean territorial communication - 1.2kHz frequency matches humpback whale vocalization range, 0.3s-0.8s-0.3s structure consistent with phrase-based whale songs recorded in North Atlantic populations, tidal correlation indicates feeding coordination signal transmitted at optimal acoustic propagation windows',
+                    'Bioluminescent organism collective synchronization - acoustic pattern serves as timing cue triggering coordinated jellyfish bioluminescent displays, symbiotic ecosystem response where sound acts as distributed clock signal, pattern interval matches known photophore flash sequences in deep-sea ctenophores',
+                    'Geological resonance phenomenon - reef calcium carbonate structure creates standing acoustic wave at 1.2kHz during specific tidal pressure differentials, naturally occurring harmonic oscillation from crystalline lattice vibration, mathematical precision results from physical constants not biological intent',
+                    'Unknown deep-dwelling species communication - pattern complexity exceeds all cataloged marine species in frequency database, precise 0.3s-0.8s-0.3s timing suggests intentional signaling beyond current biological models, organism depth and acoustic frequency indicate body mass larger than known deep-ocean fauna',
+                    'Equipment acoustic artifact - underwater sensor array electromagnetic coupling creating 1.2kHz interference pattern, systematic electronic noise from wireless transmission protocols, pattern regularity indicates digital sampling artifact rather than natural biological or geological source',
+                    'Non-human intelligence communication attempt - mathematical precision of interval ratios (exact 3:8:3 pattern) suggests engineered signal designed to attract attention, no natural analog exists in marine biology for this specific frequency-timing combination, appears optimized for detection by technological listening systems',
+                    'Symbiotic multi-species coordination network - acoustic pattern triggers simultaneous behavioral responses across multiple organism types (jellyfish bioluminescence + cetacean movement + reef fish schooling), serves as ecosystem-wide synchronization protocol transcending species boundaries, emergent communication system evolved from co-dependent species interactions'
                 ]
             }
         };
@@ -2106,6 +2281,7 @@
                 document.getElementById('modeBadge').style.borderColor = '#1a1a1a';
                 document.getElementById('aquariusConfig').style.display = 'block';
                 document.getElementById('smartLabConfig').style.display = 'none';
+                document.getElementById('hypothesisConfig').style.display = 'none';
                 
                 // Update status bar
                 document.getElementById('statusBar').innerHTML = `
@@ -2125,13 +2301,14 @@
                 `;
                 updateTimestamp();
                 
-            } else {
+            } else if (mode === 'smartlab') {
                 document.getElementById('modeSmartLab').classList.add('active');
                 document.getElementById('modeBadge').textContent = 'TEKMARA SMART LAB';
                 document.getElementById('modeBadge').style.color = '#06b6d4';
                 document.getElementById('modeBadge').style.borderColor = '#06b6d4';
                 document.getElementById('aquariusConfig').style.display = 'none';
                 document.getElementById('smartLabConfig').style.display = 'block';
+                document.getElementById('hypothesisConfig').style.display = 'none';
                 
                 // Update status bar
                 document.getElementById('statusBar').innerHTML = `
@@ -2144,6 +2321,33 @@
                     </div>
                     <div class="status-item">
                         <span>AI MONITOR: ACTIVE</span>
+                    </div>
+                    <div class="status-item">
+                        <span id="timestamp">--:--:--</span>
+                    </div>
+                `;
+                updateTimestamp();
+                
+            } else if (mode === 'hypothesis') {
+                document.getElementById('modeHypothesis').classList.add('active');
+                document.getElementById('modeBadge').textContent = 'HYPOTHESIS LAB';
+                document.getElementById('modeBadge').style.color = '#8b5cf6';
+                document.getElementById('modeBadge').style.borderColor = '#8b5cf6';
+                document.getElementById('aquariusConfig').style.display = 'none';
+                document.getElementById('smartLabConfig').style.display = 'none';
+                document.getElementById('hypothesisConfig').style.display = 'block';
+                
+                // Update status bar
+                document.getElementById('statusBar').innerHTML = `
+                    <div class="status-item">
+                        <div class="status-dot status-online"></div>
+                        <span>PATTERN DETECTED</span>
+                    </div>
+                    <div class="status-item">
+                        <span>FREQ: ${hypothesisSensors.frequency}kHz</span>
+                    </div>
+                    <div class="status-item">
+                        <span>${hypothesisSensors.occurrences}/DAY</span>
                     </div>
                     <div class="status-item">
                         <span id="timestamp">--:--:--</span>
@@ -2203,6 +2407,41 @@
                     </div>
                     <div class="status-item">
                         <span>AI MONITOR: ACTIVE</span>
+                    </div>
+                    <div class="status-item">
+                        <span id="timestamp">--:--:--</span>
+                    </div>
+                `;
+                updateTimestamp();
+            }
+        }
+
+        // Hypothesis Lab sensor adjustments
+        function adjustHypothesisSensor(sensor, delta) {
+            if (sensor === 'frequency') {
+                hypothesisSensors.frequency = Math.max(0.1, Math.min(5.0, Math.round((hypothesisSensors.frequency + delta) * 10) / 10));
+                document.getElementById('frequency-value').textContent = hypothesisSensors.frequency.toFixed(1);
+            } else if (sensor === 'occurrences') {
+                hypothesisSensors.occurrences = Math.max(1, Math.min(20, hypothesisSensors.occurrences + delta));
+                document.getElementById('occurrences-value').textContent = hypothesisSensors.occurrences;
+            } else if (sensor === 'tidal') {
+                hypothesisSensors.tidal = Math.max(0, Math.min(100, hypothesisSensors.tidal + delta));
+                document.getElementById('tidal-value').textContent = hypothesisSensors.tidal;
+            }
+            
+            // Update status bar if in Hypothesis mode
+            if (currentMode === 'hypothesis') {
+                const statusBar = document.getElementById('statusBar');
+                statusBar.innerHTML = `
+                    <div class="status-item">
+                        <div class="status-dot status-online"></div>
+                        <span>PATTERN DETECTED</span>
+                    </div>
+                    <div class="status-item">
+                        <span>FREQ: ${hypothesisSensors.frequency}kHz</span>
+                    </div>
+                    <div class="status-item">
+                        <span>${hypothesisSensors.occurrences}/DAY</span>
                     </div>
                     <div class="status-item">
                         <span id="timestamp">--:--:--</span>
@@ -2423,6 +2662,12 @@
             checkboxes.forEach(cb => cb.checked = selectAll.checked);
         }
 
+        function toggleAllHypothesisPerspectives() {
+            const selectAll = document.getElementById('selectAllHypothesisPerspectives');
+            const checkboxes = document.querySelectorAll('.hypothesis-perspective-checkbox');
+            checkboxes.forEach(cb => cb.checked = selectAll.checked);
+        }
+
         // Update individual checkbox behavior
         document.addEventListener('change', function(e) {
             if (e.target.classList.contains('perspective-checkbox')) {
@@ -2434,6 +2679,10 @@
                 // If any Smart Lab perspective is unchecked, uncheck "All Perspectives"
                 const allChecked = Array.from(document.querySelectorAll('.smartlab-perspective-checkbox')).every(cb => cb.checked);
                 document.getElementById('selectAllSmartLabPerspectives').checked = allChecked;
+            }
+            if (e.target.classList.contains('hypothesis-perspective-checkbox')) {
+                const allChecked = Array.from(document.querySelectorAll('.hypothesis-perspective-checkbox')).every(cb => cb.checked);
+                document.getElementById('selectAllHypothesisPerspectives').checked = allChecked;
             }
         });
 
@@ -2952,6 +3201,27 @@
                 }
 
                 return `As ${roleInfo.name} at the FIU Aquarius Tekmara Smart Lab in Florida Keys National Marine Sanctuary, analyzing ${smartLabSensors.vessels} surface vessels within 1km radius, ${smartLabSensors.hydrocarbons}ppb hydrocarbon concentration, ${smartLabSensors.wireless}% wireless data throughput, ${smartLabSensors.auvFleet} active AUV units${context.length > 0 ? ', ' + context.join(', ') : ''} - what is the coherent autonomous system response?`;
+            } else if (currentMode === 'hypothesis') {
+                // Hypothesis Lab query construction
+                const context = [];
+                
+                if (document.getElementById('hyp-ctx-tidal').checked) {
+                    context.push(`${hypothesisSensors.tidal}% tidal cycle correlation`);
+                }
+                if (document.getElementById('hyp-ctx-bio').checked) {
+                    context.push('synchronized bioluminescence spike during acoustic pattern');
+                }
+                if (document.getElementById('hyp-ctx-chemistry').checked) {
+                    context.push('water chemistry unchanged across pattern occurrences');
+                }
+                if (document.getElementById('hyp-ctx-equipment').checked) {
+                    context.push('all equipment malfunction tests negative');
+                }
+                if (document.getElementById('hyp-ctx-precision').checked) {
+                    context.push('mathematical precision in interval timing suggests non-random source');
+                }
+
+                return `As ${roleInfo.name} investigating recurring acoustic phenomenon at FIU Aquarius, observed pattern: ${hypothesisSensors.frequency}kHz frequency, ${hypothesisSensors.interval}s interval structure, ${hypothesisSensors.occurrences} occurrences per day${context.length > 0 ? ', ' + context.join(', ') : ''} - which hypothesis is most geometrically coherent with observed constraints?`;
             } else {
                 // Aquarius human decision support query construction
                 const context = [];
@@ -2977,247 +3247,192 @@
             }
         }
 
-        async function runAnalysis() {
-            // Determine candidates based on mode
-            let analysisCandidate;
-            let selectedRoles;
+    async function runAnalysis() {
+        // Determine candidates based on mode
+        let analysisCandidate;
+        let selectedRoles;
+        
+        if (currentMode === 'smartlab') {
+            // Smart Lab mode - use smartlab candidates
+            analysisCandidate = SCENARIOS['smartlab'].candidates;
             
-            if (currentMode === 'smartlab') {
-                // Smart Lab mode - use smartlab candidates
-                analysisCandidate = SCENARIOS['smartlab'].candidates;
-                
-                // Get checked Smart Lab perspectives
-                const checkedBoxes = Array.from(document.querySelectorAll('.smartlab-perspective-checkbox:checked'));
-                if (checkedBoxes.length === 0) {
-                    alert('Please select at least one perspective to analyze.');
-                    return;
-                }
-                
-                selectedRoles = checkedBoxes.map(cb => cb.dataset.role);
+            // Get checked Smart Lab perspectives
+            const checkedBoxes = Array.from(document.querySelectorAll('.smartlab-perspective-checkbox:checked'));
+            if (checkedBoxes.length === 0) {
+                alert('Please select at least one perspective to analyze.');
+                return;
+            }
+            
+            selectedRoles = checkedBoxes.map(cb => cb.dataset.role);
+        } else if (currentMode === 'hypothesis') {
+            // Hypothesis Lab mode - use hypothesis candidates
+            analysisCandidate = SCENARIOS['hypothesis-lab'].candidates;
+            
+            // Get checked Hypothesis perspectives
+            const checkedBoxes = Array.from(document.querySelectorAll('.hypothesis-perspective-checkbox:checked'));
+            if (checkedBoxes.length === 0) {
+                alert('Please select at least one research perspective to analyze.');
+                return;
+            }
+            
+            selectedRoles = checkedBoxes.map(cb => cb.dataset.role);
+        } else {
+            // Aquarius mode - use current scenario candidates
+            if (candidates.length === 0) {
+                alert('Please add at least one decision option before running analysis.');
+                return;
+            }
+
+            if (editingIndex !== -1) {
+                alert('Please save or cancel the option you are currently editing.');
+                return;
+            }
+            
+            analysisCandidate = candidates;
+            
+            // Get checked perspectives
+            const checkedBoxes = Array.from(document.querySelectorAll('.perspective-checkbox:checked'));
+            if (checkedBoxes.length === 0) {
+                alert('Please select at least one perspective to analyze.');
+                return;
+            }
+            
+            selectedRoles = checkedBoxes.map(cb => cb.dataset.role);
+        }
+
+        // Show loading state
+        const analyzeBtn = currentMode === 'smartlab' ? 'analyzeBtn2' : currentMode === 'hypothesis' ? 'analyzeBtn3' : 'analyzeBtn';
+        document.getElementById(analyzeBtn).disabled = true;
+        const btnText = currentMode === 'hypothesis' ? 'Testing...' : 'Analyzing...';
+        document.getElementById(analyzeBtn).textContent = btnText;
+        
+        document.getElementById('recommendationsPanel').innerHTML = `
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <div class="loading-text">Running ARBITER Analysis</div>
+                <div class="loading-subtext">Measuring geometric coherence...</div>
+            </div>
+        `;
+
+        document.getElementById('perspectivesPanel').innerHTML = `
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <div class="loading-text">Computing Perspectives</div>
+                <div class="loading-subtext">This may take a moment...</div>
+            </div>
+        `;
+
+        try {
+            // Run selected perspectives
+            const results = await Promise.all(
+                selectedRoles.map(async role => {
+                    const query = buildSemanticQuery(role);
+                    const response = await fetch(ARBITER_API, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ query, candidates: analysisCandidate })
+                    });
+                    const data = await response.json();
+                    return { role, data };
+                })
+            );
+            
+            if (selectedRoles.length === 1) {
+                displaySinglePerspective(selectedRoles[0], results[0].data);
             } else {
-                // Aquarius mode - use current scenario candidates
-                if (candidates.length === 0) {
-                    alert('Please add at least one decision option before running analysis.');
-                    return;
-                }
-
-                if (editingIndex !== -1) {
-                    alert('Please save or cancel the option you are currently editing.');
-                    return;
-                }
-                
-                analysisCandidate = candidates;
-                
-                // Get checked perspectives
-                const checkedBoxes = Array.from(document.querySelectorAll('.perspective-checkbox:checked'));
-                if (checkedBoxes.length === 0) {
-                    alert('Please select at least one perspective to analyze.');
-                    return;
-                }
-                
-                selectedRoles = checkedBoxes.map(cb => cb.dataset.role);
+                displayAllPerspectives(results, analysisCandidate);
             }
 
-            // Show loading state
-            const analyzeBtn = currentMode === 'smartlab' ? 'analyzeBtn2' : 'analyzeBtn';
-            document.getElementById(analyzeBtn).disabled = true;
-            document.getElementById(analyzeBtn).textContent = 'Analyzing...';
-            
+        } catch (error) {
+            console.error('Analysis error:', error);
             document.getElementById('recommendationsPanel').innerHTML = `
-                <div class="loading-state">
-                    <div class="spinner"></div>
-                    <div class="loading-text">Running ARBITER Analysis</div>
-                    <div class="loading-subtext">Measuring geometric coherence...</div>
-                </div>
-            `;
-
-            document.getElementById('perspectivesPanel').innerHTML = `
-                <div class="loading-state">
-                    <div class="spinner"></div>
-                    <div class="loading-text">Computing Perspectives</div>
-                    <div class="loading-subtext">This may take a moment...</div>
-                </div>
-            `;
-
-            try {
-                // Run selected perspectives
-                const results = await Promise.all(
-                    selectedRoles.map(async role => {
-                        const query = buildSemanticQuery(role);
-                        const response = await fetch(ARBITER_API, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ query, candidates: analysisCandidate })
-                        });
-                        const data = await response.json();
-                        return { role, data };
-                    })
-                );
-                
-                if (selectedRoles.length === 1) {
-                    displaySinglePerspective(selectedRoles[0], results[0].data);
-                } else {
-                    displayAllPerspectives(results, analysisCandidate);
-                }
-
-            } catch (error) {
-                console.error('Analysis error:', error);
-                document.getElementById('recommendationsPanel').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">×</div>
-                        <div class="empty-title">Analysis Failed</div>
-                        <div class="empty-description">
-                            Could not connect to ARBITER. Check connection and try again.
-                        </div>
+                <div class="empty-state">
+                    <div class="empty-icon">×</div>
+                    <div class="empty-title">Analysis Failed</div>
+                    <div class="empty-description">
+                        Could not connect to ARBITER. Check connection and try again.
                     </div>
-                `;
-            } finally {
-                document.getElementById(analyzeBtn).disabled = false;
-                document.getElementById(analyzeBtn).textContent = currentMode === 'smartlab' ? 'Run Coherence Analysis' : 'Run Analysis';
-            }
+                </div>
+            `;
+        } finally {
+            document.getElementById(analyzeBtn).disabled = false;
+            const finalText = currentMode === 'smartlab' ? 'Run Coherence Analysis' : currentMode === 'hypothesis' ? 'Test Hypotheses' : 'Run Analysis';
+            document.getElementById(analyzeBtn).textContent = finalText;
         }
+    }
 
-        function displayAllPerspectives(results, candidates) {
-            // Aggregate scores across perspectives
-            const aggregated = candidates.map((candidate, idx) => {
-                const scores = results.map(r => r.data.all[idx].score);
-                const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-                const supporters = results.filter(r => r.data.all[idx].score > 0.7).map(r => ROLES[r.role].name);
-                return {
-                    text: candidate,
-                    avgScore,
-                    scores,
-                    supporters
-                };
-            });
+    function displayAllPerspectives(results, candidates) {
+        // Aggregate scores across perspectives
+        const aggregated = candidates.map((candidate, idx) => {
+            const scores = results.map(r => r.data.all[idx].score);
+            const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+            const supporters = results.filter(r => r.data.all[idx].score > 0.7).map(r => ROLES[r.role].name);
+            return {
+                text: candidate,
+                avgScore,
+                scores,
+                supporters
+            };
+        });
 
-            // Sort by average score
-            aggregated.sort((a, b) => b.avgScore - a.avgScore);
+        // Sort by average score
+        aggregated.sort((a, b) => b.avgScore - a.avgScore);
 
-            // Display recommendations
-            let html = '';
-            aggregated.forEach((rec, idx) => {
-                const scorePercent = rec.avgScore * 100;
-                const scoreColor = rec.avgScore >= 0.7 ? 'var(--green)' : 
-                                 rec.avgScore >= 0.5 ? 'var(--amber)' : 'var(--gray)';
-                html += `
-                    <div class="rec-card">
-                        <div class="rec-rank">${idx + 1}</div>
-                        <div class="rec-title">${rec.text.split(' - ')[0]}</div>
-                        <div class="rec-score-container">
-                            <div class="rec-score-bar">
-                                <div class="rec-score-fill" style="width: ${scorePercent}%; background: ${scoreColor};"></div>
-                            </div>
-                            <div class="rec-score-value" style="color: ${scoreColor};">${rec.avgScore.toFixed(3)}</div>
+        // Display recommendations
+        let html = '';
+        aggregated.forEach((rec, idx) => {
+            const scorePercent = rec.avgScore * 100;
+            const scoreColor = rec.avgScore >= 0.7 ? 'var(--green)' : 
+                             rec.avgScore >= 0.5 ? 'var(--amber)' : 'var(--gray)';
+            html += `
+                <div class="rec-card">
+                    <div class="rec-rank">${idx + 1}</div>
+                    <div class="rec-title">${rec.text.split(' - ')[0]}</div>
+                    <div class="rec-score-container">
+                        <div class="rec-score-bar">
+                            <div class="rec-score-fill" style="width: ${scorePercent}%; background: ${scoreColor};"></div>
                         </div>
-                        ${rec.text.includes(' - ') ? `<div class="rec-description">${rec.text.split(' - ')[1]}</div>` : ''}
-                        ${rec.supporters.length > 0 ? `
-                            <div class="rec-support">
-                                ${rec.supporters.map(s => `<div class="support-badge">${s}</div>`).join('')}
-                            </div>
-                        ` : ''}
+                        <div class="rec-score-value" style="color: ${scoreColor};">${rec.avgScore.toFixed(3)}</div>
                     </div>
-                `;
-            });
-
-            document.getElementById('recommendationsPanel').innerHTML = html;
-
-            // Display perspectives
-            const perspectivesHtml = results.map(({ role, data }) => {
-                const roleInfo = ROLES[role];
-                const topOption = data.all[0];
-                const recommendation = topOption.score >= 0.75 ? 'ABORT' :
-                                     topOption.score >= 0.60 ? 'WARNING' : 'AMBIGUOUS';
-                const recClass = recommendation === 'ABORT' ? 'rec-abort' :
-                               recommendation === 'WARNING' ? 'rec-warning' : 'rec-ambiguous';
-                
-                return `
-                    <div class="perspective-card">
-                        <div class="perspective-header" onclick="togglePerspective(this)">
-                            <div class="perspective-info">
-                                <div class="perspective-emoji" style="color: ${roleInfo.color};">${roleInfo.icon}</div>
-                                <div class="perspective-name">${roleInfo.name}</div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div class="perspective-rec ${recClass}">${recommendation}</div>
-                                <div class="perspective-score">${topOption.score.toFixed(3)}</div>
-                                <div class="perspective-expand">▼</div>
-                            </div>
+                    ${rec.text.includes(' - ') ? `<div class="rec-description">${rec.text.split(' - ')[1]}</div>` : ''}
+                    ${rec.supporters.length > 0 ? `
+                        <div class="rec-support">
+                            ${rec.supporters.map(s => `<div class="support-badge">${s}</div>`).join('')}
                         </div>
-                        <div class="perspective-body">
-                            <div class="perspective-content">
-                                <strong>Top Options:</strong>
-                                <div class="perspective-options">
-                                    ${data.all.slice(0, 3).map(opt => `
-                                        <div class="option-item">
-                                            <div class="option-score">${opt.score.toFixed(3)}</div>
-                                            <div class="option-text">${opt.text}</div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Add consensus banner
-            const abortCount = results.filter(r => r.data.all[0].score >= 0.75).length;
-            const consensusHtml = `
-                <div class="consensus-banner">
-                    <div class="consensus-title">Consensus Analysis</div>
-                    <div class="consensus-stat">${abortCount} of ${results.length} Perspectives</div>
-                    <div class="consensus-detail">
-                        ${abortCount >= 4 ? 'Strong consensus for immediate action' :
-                          abortCount >= 2 ? 'Mixed signals - proceed with caution' :
-                          'Unclear - further analysis recommended'}
-                    </div>
+                    ` : ''}
                 </div>
             `;
+        });
 
-            document.getElementById('perspectivesPanel').innerHTML = consensusHtml + '<div class="perspective-list">' + perspectivesHtml + '</div>';
-        }
+        document.getElementById('recommendationsPanel').innerHTML = html;
 
-        function displaySinglePerspective(role, data) {
+        // Display perspectives
+        const perspectivesHtml = results.map(({ role, data }) => {
             const roleInfo = ROLES[role];
+            const topOption = data.all[0];
+            const recommendation = topOption.score >= 0.75 ? 'ABORT' :
+                                 topOption.score >= 0.60 ? 'WARNING' : 'AMBIGUOUS';
+            const recClass = recommendation === 'ABORT' ? 'rec-abort' :
+                           recommendation === 'WARNING' ? 'rec-warning' : 'rec-ambiguous';
             
-            // Display recommendations
-            let html = '';
-            data.all.forEach((rec, idx) => {
-                const scorePercent = rec.score * 100;
-                const scoreColor = rec.score >= 0.7 ? 'var(--green)' : 
-                                 rec.score >= 0.5 ? 'var(--amber)' : 'var(--gray)';
-                html += `
-                    <div class="rec-card">
-                        <div class="rec-rank">${idx + 1}</div>
-                        <div class="rec-title">${rec.text.split(' - ')[0]}</div>
-                        <div class="rec-score-container">
-                            <div class="rec-score-bar">
-                                <div class="rec-score-fill" style="width: ${scorePercent}%; background: ${scoreColor};"></div>
-                            </div>
-                            <div class="rec-score-value" style="color: ${scoreColor};">${rec.score.toFixed(3)}</div>
-                        </div>
-                        ${rec.text.includes(' - ') ? `<div class="rec-description">${rec.text.split(' - ')[1]}</div>` : ''}
-                    </div>
-                `;
-            });
-
-            document.getElementById('recommendationsPanel').innerHTML = html;
-
-            // Display single perspective
-            document.getElementById('perspectivesPanel').innerHTML = `
-                <div class="perspective-card expanded">
-                    <div class="perspective-header">
+            return `
+                <div class="perspective-card">
+                    <div class="perspective-header" onclick="togglePerspective(this)">
                         <div class="perspective-info">
                             <div class="perspective-emoji" style="color: ${roleInfo.color};">${roleInfo.icon}</div>
                             <div class="perspective-name">${roleInfo.name}</div>
                         </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="perspective-rec ${recClass}">${recommendation}</div>
+                            <div class="perspective-score">${topOption.score.toFixed(3)}</div>
+                            <div class="perspective-expand">▼</div>
+                        </div>
                     </div>
-                    <div class="perspective-body" style="max-height: none;">
+                    <div class="perspective-body">
                         <div class="perspective-content">
-                            <strong>Analysis from ${roleInfo.name} perspective</strong>
+                            <strong>Top Options:</strong>
                             <div class="perspective-options">
-                                ${data.all.map(opt => `
+                                ${data.all.slice(0, 3).map(opt => `
                                     <div class="option-item">
                                         <div class="option-score">${opt.score.toFixed(3)}</div>
                                         <div class="option-text">${opt.text}</div>
@@ -3228,12 +3443,81 @@
                     </div>
                 </div>
             `;
-        }
+        }).join('');
 
-        function togglePerspective(header) {
-            const card = header.closest('.perspective-card');
-            card.classList.toggle('expanded');
-        }
-    </script>
+        // Add consensus banner
+        const abortCount = results.filter(r => r.data.all[0].score >= 0.75).length;
+        const consensusHtml = `
+            <div class="consensus-banner">
+                <div class="consensus-title">Consensus Analysis</div>
+                <div class="consensus-stat">${abortCount} of ${results.length} Perspectives</div>
+                <div class="consensus-detail">
+                    ${abortCount >= 4 ? 'Strong consensus for immediate action' :
+                      abortCount >= 2 ? 'Mixed signals - proceed with caution' :
+                      'Unclear - further analysis recommended'}
+                </div>
+            </div>
+        `;
+
+        document.getElementById('perspectivesPanel').innerHTML = consensusHtml + '<div class="perspective-list">' + perspectivesHtml + '</div>';
+    }
+
+    function displaySinglePerspective(role, data) {
+        const roleInfo = ROLES[role];
+        
+        // Display recommendations
+        let html = '';
+        data.all.forEach((rec, idx) => {
+            const scorePercent = rec.score * 100;
+            const scoreColor = rec.score >= 0.7 ? 'var(--green)' : 
+                             rec.score >= 0.5 ? 'var(--amber)' : 'var(--gray)';
+            html += `
+                <div class="rec-card">
+                    <div class="rec-rank">${idx + 1}</div>
+                    <div class="rec-title">${rec.text.split(' - ')[0]}</div>
+                    <div class="rec-score-container">
+                        <div class="rec-score-bar">
+                            <div class="rec-score-fill" style="width: ${scorePercent}%; background: ${scoreColor};"></div>
+                        </div>
+                        <div class="rec-score-value" style="color: ${scoreColor};">${rec.score.toFixed(3)}</div>
+                    </div>
+                    ${rec.text.includes(' - ') ? `<div class="rec-description">${rec.text.split(' - ')[1]}</div>` : ''}
+                </div>
+            `;
+        });
+
+        document.getElementById('recommendationsPanel').innerHTML = html;
+
+        // Display single perspective
+        document.getElementById('perspectivesPanel').innerHTML = `
+            <div class="perspective-card expanded">
+                <div class="perspective-header">
+                    <div class="perspective-info">
+                        <div class="perspective-emoji" style="color: ${roleInfo.color};">${roleInfo.icon}</div>
+                        <div class="perspective-name">${roleInfo.name}</div>
+                    </div>
+                </div>
+                <div class="perspective-body" style="max-height: none;">
+                    <div class="perspective-content">
+                        <strong>Analysis from ${roleInfo.name} perspective</strong>
+                        <div class="perspective-options">
+                            ${data.all.map(opt => `
+                                <div class="option-item">
+                                    <div class="option-score">${opt.score.toFixed(3)}</div>
+                                    <div class="option-text">${opt.text}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function togglePerspective(header) {
+        const card = header.closest('.perspective-card');
+        card.classList.toggle('expanded');
+    }
+</script>
 </body>
 </html>
