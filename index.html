@@ -25,6 +25,8 @@
             --blue: #3b82f6;
             --cyan: #06b6d4;
             --purple: #8b5cf6;
+            --pink: #ec4899;
+            --indigo: #6366f1;
         }
 
         body {
@@ -885,6 +887,154 @@
             color: var(--gray-light);
         }
 
+        /* Visualization */
+        .visualization-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            margin: 20px 0;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            padding: 20px;
+        }
+
+        .visualization-grid {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            border-left: 2px solid var(--border);
+            border-bottom: 2px solid var(--border);
+            margin: 20px 0 40px 0;
+        }
+
+        .grid-line {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            pointer-events: none;
+        }
+
+        .grid-label {
+            position: absolute;
+            left: -30px;
+            font-size: 9px;
+            color: var(--gray);
+            transform: translateY(-50%);
+        }
+
+        .query-marker {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--white);
+            border: 2px solid var(--blue);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .query-marker::after {
+            content: 'QUERY';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            color: var(--blue);
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .candidate-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 5;
+        }
+
+        .candidate-dot:hover {
+            width: 12px;
+            height: 12px;
+            z-index: 20;
+        }
+
+        .candidate-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            font-size: 9px;
+            color: var(--gray-light);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            z-index: 30;
+        }
+
+        .candidate-dot:hover::after {
+            opacity: 1;
+        }
+
+        .axis-label {
+            position: absolute;
+            font-size: 9px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .axis-label.x {
+            bottom: -25px;
+            right: 0;
+        }
+
+        .axis-label.y {
+            top: 0;
+            left: -45px;
+            transform: rotate(-90deg);
+            transform-origin: left top;
+        }
+
+        .viz-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            color: var(--gray-light);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dimension-label {
+            position: absolute;
+            font-size: 8px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -922,7 +1072,6 @@
             }
         }
 
-        /* Mobile Responsive Styles */
         @media (max-width: 1200px) {
             .main {
                 grid-template-columns: 1fr !important;
@@ -1043,7 +1192,6 @@
             }
         }
 
-        /* Mobile Responsive */
         @media (max-width: 1024px) {
             .main {
                 height: auto;
@@ -1136,7 +1284,6 @@
                 font-size: 20px;
             }
 
-            /* Make checkboxes and radio items easier to tap on mobile */
             .checkbox-item, .radio-item {
                 padding: 14px 12px;
                 min-height: 48px;
@@ -1146,21 +1293,18 @@
                 font-size: 13px;
             }
 
-            /* Larger touch targets for buttons */
             .btn, .btn-secondary {
                 padding: 14px 20px;
                 font-size: 13px;
                 min-height: 48px;
             }
 
-            /* Sensor controls easier to use on mobile */
             .stepper-btn {
                 width: 40px;
                 height: 40px;
                 font-size: 18px;
             }
 
-            /* Make input fields larger on mobile */
             .input-field, .select-field {
                 padding: 12px;
                 font-size: 14px;
@@ -1170,7 +1314,6 @@
                 min-height: 80px;
             }
 
-            /* Modal adjustments */
             #addPerspectiveModal > div,
             #createScenarioModal > div {
                 width: 95%;
@@ -1178,7 +1321,6 @@
                 margin: 0 auto;
             }
 
-            /* Scenario selector larger on mobile */
             .select-field {
                 font-size: 14px;
                 padding: 12px;
@@ -1227,12 +1369,10 @@
                 padding: 4px 8px;
             }
 
-            /* Stack buttons vertically on very small screens */
             .section > div[style*="grid-template-columns"] {
                 grid-template-columns: 1fr !important;
             }
 
-            /* Single column for modal radio options */
             #createScenarioModal label[style*="display: flex"] {
                 flex-direction: column;
                 align-items: flex-start !important;
@@ -1247,7 +1387,6 @@
             }
         }
 
-        /* Landscape mobile orientation */
         @media (max-width: 1024px) and (orientation: landscape) {
             .container {
                 grid-template-columns: 350px 1fr 1fr;
@@ -1271,7 +1410,6 @@
             }
         }
 
-        /* Tablet specific adjustments */
         @media (min-width: 641px) and (max-width: 1024px) {
             .container {
                 grid-template-columns: 1fr 1fr;
@@ -1682,9 +1820,46 @@
 
             <!-- HYPOTHESIS LAB MODE CONTENT -->
             <div id="hypothesisConfig" style="display: none;">
-                <!-- Observation Data -->
+                <!-- Query Hypothesis - Manual Entry with Templates -->
                 <div class="section">
-                    <div class="section-title">Observation Data</div>
+                    <div class="section-title">Your Hypothesis Query</div>
+                    <div style="margin-bottom: 12px;">
+                        <textarea 
+                            id="hypothesisQueryInput" 
+                            class="input-field" 
+                            placeholder="Describe the phenomenon you're investigating... (e.g., 'Recurring 1.2kHz acoustic pattern at tidal cycle, structured intervals 0.3s-0.8s-0.3s, no species match')"
+                            rows="4"
+                            style="resize: vertical; font-size: 13px;"
+                        >Recurring 1.2kHz acoustic pattern, 3x daily at tidal cycle, structured intervals 0.3s-0.8s-0.3s repeating, no species match, appears to correlate with current shifts</textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+                        <button class="btn-secondary btn" onclick="loadHypothesisTemplate('acoustic')" style="flex: 1; padding: 10px; font-size: 11px;">
+                            🐋 Acoustic Pattern
+                        </button>
+                        <button class="btn-secondary btn" onclick="loadHypothesisTemplate('bioluminescence')" style="flex: 1; padding: 10px; font-size: 11px;">
+                            ✨ Bioluminescence
+                        </button>
+                        <button class="btn-secondary btn" onclick="loadHypothesisTemplate('chemical')" style="flex: 1; padding: 10px; font-size: 11px;">
+                            🧪 Chemical Anomaly
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn-secondary btn" onclick="loadHypothesisTemplate('geological')" style="flex: 1; padding: 10px; font-size: 11px;">
+                            🌋 Geological
+                        </button>
+                        <button class="btn-secondary btn" onclick="loadHypothesisTemplate('equipment')" style="flex: 1; padding: 10px; font-size: 11px;">
+                            🔧 Equipment Artifact
+                        </button>
+                        <button class="btn-secondary btn" onclick="loadHypothesisTemplate('clear')" style="flex: 1; padding: 10px; font-size: 11px; color: var(--gray);">
+                            ✕ Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Observation Data (simplified) -->
+                <div class="section">
+                    <div class="section-title">Supporting Observations</div>
                     <div class="sensor-grid">
                         <div class="sensor-row">
                             <div class="sensor-label">Acoustic Frequency</div>
@@ -1732,36 +1907,45 @@
                     </div>
                 </div>
 
-                <!-- Observed Correlations -->
+                <!-- Hypothesis Candidates - Template Selection -->
                 <div class="section">
-                    <div class="section-title">Observed Correlations</div>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" id="hyp-ctx-tidal" checked>
-                            <div class="checkbox"></div>
-                            <span class="checkbox-label">Tidal cycle correlation (94%)</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" id="hyp-ctx-bio" checked>
-                            <div class="checkbox"></div>
-                            <span class="checkbox-label">Bioluminescence spike during pattern</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" id="hyp-ctx-chemistry">
-                            <div class="checkbox"></div>
-                            <span class="checkbox-label">Water chemistry unchanged</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" id="hyp-ctx-equipment" checked>
-                            <div class="checkbox"></div>
-                            <span class="checkbox-label">No equipment malfunction detected</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" id="hyp-ctx-precision" checked>
-                            <div class="checkbox"></div>
-                            <span class="checkbox-label">Mathematical precision in intervals</span>
-                        </label>
+                    <div class="section-title">Hypothesis Candidates</div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 10px; color: var(--gray); margin-bottom: 8px; letter-spacing: 0.05em;">
+                            QUICK TEMPLATES
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px;">
+                            <button class="btn-secondary btn" onclick="loadCandidateTemplate('cetacean')" style="padding: 10px; font-size: 11px;">
+                                🐋 Cetacean
+                            </button>
+                            <button class="btn-secondary btn" onclick="loadCandidateTemplate('deep-fish')" style="padding: 10px; font-size: 11px;">
+                                🐠 Deep Fish
+                            </button>
+                            <button class="btn-secondary btn" onclick="loadCandidateTemplate('equipment')" style="padding: 10px; font-size: 11px;">
+                                🔧 Equipment
+                            </button>
+                            <button class="btn-secondary btn" onclick="loadCandidateTemplate('geological')" style="padding: 10px; font-size: 11px;">
+                                🌋 Geological
+                            </button>
+                            <button class="btn-secondary btn" onclick="loadCandidateTemplate('nhi')" style="padding: 10px; font-size: 11px;">
+                                👽 NHI
+                            </button>
+                            <button class="btn-secondary btn" onclick="loadCandidateTemplate('bioluminescent')" style="padding: 10px; font-size: 11px;">
+                                ✨ Bioluminescent
+                            </button>
+                        </div>
+                        <button class="btn-secondary btn" onclick="loadCandidateTemplate('all')" style="padding: 10px; font-size: 11px; width: 100%;">
+                            Load All Template Hypotheses
+                        </button>
                     </div>
+
+                    <div id="hypothesisCandidatesList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                        <!-- Candidates will be rendered here -->
+                    </div>
+                    <button class="btn-secondary btn" onclick="addHypothesisCandidate()">
+                        + Add Custom Hypothesis
+                    </button>
                 </div>
 
                 <!-- Research Perspectives -->
@@ -1805,7 +1989,7 @@
 
                 <!-- Run Analysis -->
                 <div class="section">
-                    <button class="btn" onclick="runAnalysis()" id="analyzeBtn3">
+                    <button class="btn" onclick="runHypothesisAnalysis()" id="analyzeBtn3">
                         Test Hypotheses
                     </button>
                 </div>
@@ -1841,6 +2025,20 @@
                     <div class="empty-title">Awaiting Analysis</div>
                     <div class="empty-description">
                         Perspectives will appear here after running analysis.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Visualization Panel -->
+            <div class="panel-header" style="border-top: 1px solid var(--border);">
+                <div class="panel-title">Coherence Visualization</div>
+            </div>
+            <div class="section" id="visualizationPanel" style="padding: 20px;">
+                <div class="empty-state" style="padding: 20px;">
+                    <div class="empty-icon">📊</div>
+                    <div class="empty-title">Run Analysis to Visualize</div>
+                    <div class="empty-description">
+                        Hypothesis coherence will be plotted against the central query.
                     </div>
                 </div>
             </div>
@@ -2052,6 +2250,30 @@
         let candidates = [];
         let editingIndex = -1;
 
+        // Hypothesis Lab candidates
+        let hypothesisCandidates = [];
+        let hypothesisEditingIndex = -1;
+
+        // Template hypothesis candidates
+        const HYPOTHESIS_TEMPLATES = {
+            'cetacean': 'Territorial marker from unknown cetacean species - 1.2kHz frequency matches known baleen whale ranges, structured intervals suggest deliberate patterning, tidal correlation indicates acoustic optimization for long-range transmission',
+            'deep-fish': 'Mating call pattern from deep-dwelling fish - 0.3s-0.8s-0.3s interval structure consistent with soniferous fish breeding displays, 3x daily occurrence aligns with crepuscular spawning peaks',
+            'equipment': 'Equipment resonance from underwater infrastructure - systematic 1.2kHz harmonic from moored instruments or cable vibration, mathematical precision suggests mechanical origin, tidal correlation from current-induced stress',
+            'geological': 'Geological acoustic phenomenon from reef structure - calcium carbonate resonance under tidal pressure differentials, natural harmonic oscillation producing coherent 0.3s-0.8s-0.3s pattern from physical constants',
+            'nhi': 'Communication attempt from non-human intelligence - exact 3:8:3 interval ratio exceeds known biological complexity, frequency optimized for detection by technological listening systems',
+            'bioluminescent': 'Bioluminescent organism collective behavior coordination - acoustic pattern serves as synchronization signal for deep-sea bioluminescent displays, symbiotic ecosystem timing mechanism'
+        };
+
+        // Hypothesis query templates
+        const HYPOTHESIS_QUERY_TEMPLATES = {
+            'acoustic': 'Recurring 1.2kHz acoustic pattern, 3x daily at tidal cycle, structured intervals 0.3s-0.8s-0.3s repeating, no species match, appears to correlate with current shifts',
+            'bioluminescence': 'Synchronized bioluminescent flashes observed at 50m depth, pattern repeats every 12.4 hours coinciding with tidal cycle, multiple organisms flashing in coordinated sequences',
+            'chemical': 'Unexplained methane spike detected at hydrothermal vent field, concentration 3x baseline, pulsed releases every 45 minutes, no known geological or biological source',
+            'geological': 'Low-frequency rumble detected at 15-20Hz, correlated with seismic activity but pattern suggests non-tectonic origin, rhythmic pulsing every 90 seconds',
+            'equipment': 'Intermittent data corruption in sensor array, pattern matches 1.7kHz interference, occurs during peak current flows, may indicate equipment malfunction',
+            'clear': ''
+        };
+
         // Custom perspectives
         let customPerspectives = [];
         let customPerspectiveIdCounter = 0;
@@ -2200,18 +2422,6 @@
                     'Autonomous survey mode - deploy AUV fleet to map pollution plume extent and identify source coordinates',
                     'Reduce power consumption - wireless degradation indicates storm approaching, conserve for critical systems'
                 ]
-            },
-            // Hypothesis Lab - Unknown phenomenon investigation
-            'hypothesis-lab': {
-                candidates: [
-                    'Cetacean territorial communication - 1.2kHz frequency matches humpback whale vocalization range, 0.3s-0.8s-0.3s structure consistent with phrase-based whale songs recorded in North Atlantic populations, tidal correlation indicates feeding coordination signal transmitted at optimal acoustic propagation windows',
-                    'Bioluminescent organism collective synchronization - acoustic pattern serves as timing cue triggering coordinated jellyfish bioluminescent displays, symbiotic ecosystem response where sound acts as distributed clock signal, pattern interval matches known photophore flash sequences in deep-sea ctenophores',
-                    'Geological resonance phenomenon - reef calcium carbonate structure creates standing acoustic wave at 1.2kHz during specific tidal pressure differentials, naturally occurring harmonic oscillation from crystalline lattice vibration, mathematical precision results from physical constants not biological intent',
-                    'Unknown deep-dwelling species communication - pattern complexity exceeds all cataloged marine species in frequency database, precise 0.3s-0.8s-0.3s timing suggests intentional signaling beyond current biological models, organism depth and acoustic frequency indicate body mass larger than known deep-ocean fauna',
-                    'Equipment acoustic artifact - underwater sensor array electromagnetic coupling creating 1.2kHz interference pattern, systematic electronic noise from wireless transmission protocols, pattern regularity indicates digital sampling artifact rather than natural biological or geological source',
-                    'Non-human intelligence communication attempt - mathematical precision of interval ratios (exact 3:8:3 pattern) suggests engineered signal designed to attract attention, no natural analog exists in marine biology for this specific frequency-timing combination, appears optimized for detection by technological listening systems',
-                    'Symbiotic multi-species coordination network - acoustic pattern triggers simultaneous behavioral responses across multiple organism types (jellyfish bioluminescence + cetacean movement + reef fish schooling), serves as ecosystem-wide synchronization protocol transcending species boundaries, emergent communication system evolved from co-dependent species interactions'
-                ]
             }
         };
 
@@ -2225,6 +2435,10 @@
 
             // Load initial scenario
             loadScenario();
+
+            // Set default hypothesis candidates
+            hypothesisCandidates = Object.values(HYPOTHESIS_TEMPLATES);
+            renderHypothesisCandidates();
 
             // Update timestamp
             setInterval(updateTimestamp, 1000);
@@ -2337,6 +2551,12 @@
                 document.getElementById('smartLabConfig').style.display = 'none';
                 document.getElementById('hypothesisConfig').style.display = 'block';
                 
+                // Initialize hypothesis candidates if empty
+                if (hypothesisCandidates.length === 0) {
+                    hypothesisCandidates = Object.values(HYPOTHESIS_TEMPLATES);
+                    renderHypothesisCandidates();
+                }
+                
                 // Update status bar
                 document.getElementById('statusBar').innerHTML = `
                     <div class="status-item">
@@ -2373,6 +2593,16 @@
                     <div class="empty-title">Awaiting Analysis</div>
                     <div class="empty-description">
                         Perspectives will appear here after running analysis.
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('visualizationPanel').innerHTML = `
+                <div class="empty-state" style="padding: 20px;">
+                    <div class="empty-icon">📊</div>
+                    <div class="empty-title">Run Analysis to Visualize</div>
+                    <div class="empty-description">
+                        ${mode === 'hypothesis' ? 'Hypothesis coherence will be plotted against the central query.' : 'Visualization available in Hypothesis Lab mode.'}
                     </div>
                 </div>
             `;
@@ -2566,6 +2796,313 @@
                 renderCandidates();
                 autoSaveCurrentScenario();
             }
+        }
+
+        // Hypothesis Lab Functions
+        function loadHypothesisTemplate(templateKey) {
+            const queryInput = document.getElementById('hypothesisQueryInput');
+            if (queryInput) {
+                queryInput.value = HYPOTHESIS_QUERY_TEMPLATES[templateKey] || '';
+            }
+        }
+
+        function loadCandidateTemplate(templateKey) {
+            if (templateKey === 'all') {
+                // Load all templates
+                hypothesisCandidates = Object.values(HYPOTHESIS_TEMPLATES);
+            } else if (HYPOTHESIS_TEMPLATES[templateKey]) {
+                // Add single template if not already present
+                const template = HYPOTHESIS_TEMPLATES[templateKey];
+                if (!hypothesisCandidates.includes(template)) {
+                    hypothesisCandidates.push(template);
+                }
+            }
+            renderHypothesisCandidates();
+        }
+
+        function addHypothesisCandidate() {
+            hypothesisCandidates.push('New hypothesis - click Edit to describe');
+            hypothesisEditingIndex = hypothesisCandidates.length - 1;
+            renderHypothesisCandidates();
+            setTimeout(() => {
+                const input = document.getElementById(`hypothesis-edit-input-${hypothesisEditingIndex}`);
+                if (input) input.select();
+            }, 50);
+        }
+
+        function renderHypothesisCandidates() {
+            const container = document.getElementById('hypothesisCandidatesList');
+            
+            if (!container) return;
+            
+            if (hypothesisCandidates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--gray);">
+                        <div style="font-size: 12px;">No hypotheses yet. Load a template or add custom.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = hypothesisCandidates.map((candidate, index) => {
+                if (hypothesisEditingIndex === index) {
+                    return `
+                        <div class="candidate-item editing">
+                            <div class="candidate-number">${index + 1}</div>
+                            <div class="candidate-content">
+                                <textarea 
+                                    class="candidate-input" 
+                                    id="hypothesis-edit-input-${index}"
+                                    rows="3"
+                                >${candidate}</textarea>
+                            </div>
+                            <div class="candidate-actions">
+                                <button class="candidate-btn save" onclick="saveHypothesisCandidate(${index})">Save</button>
+                                <button class="candidate-btn cancel" onclick="cancelHypothesisEdit()">Cancel</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="candidate-item">
+                            <div class="candidate-number">${index + 1}</div>
+                            <div class="candidate-content">
+                                <div class="candidate-text">${candidate}</div>
+                            </div>
+                            <div class="candidate-actions">
+                                <button class="candidate-btn edit" onclick="editHypothesisCandidate(${index})">Edit</button>
+                                <button class="candidate-btn delete" onclick="deleteHypothesisCandidate(${index})">×</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        function editHypothesisCandidate(index) {
+            hypothesisEditingIndex = index;
+            renderHypothesisCandidates();
+            setTimeout(() => {
+                const input = document.getElementById(`hypothesis-edit-input-${index}`);
+                if (input) {
+                    input.focus();
+                    input.setSelectionRange(input.value.length, input.value.length);
+                }
+            }, 50);
+        }
+
+        function saveHypothesisCandidate(index) {
+            const input = document.getElementById(`hypothesis-edit-input-${index}`);
+            const newText = input.value.trim();
+            
+            if (!newText) {
+                alert('Hypothesis cannot be empty');
+                return;
+            }
+            
+            hypothesisCandidates[index] = newText;
+            hypothesisEditingIndex = -1;
+            renderHypothesisCandidates();
+        }
+
+        function cancelHypothesisEdit() {
+            if (hypothesisEditingIndex === hypothesisCandidates.length - 1 && 
+                hypothesisCandidates[hypothesisEditingIndex] === 'New hypothesis - click Edit to describe') {
+                hypothesisCandidates.pop();
+            }
+            hypothesisEditingIndex = -1;
+            renderHypothesisCandidates();
+        }
+
+        function deleteHypothesisCandidate(index) {
+            if (confirm('Remove this hypothesis?')) {
+                hypothesisCandidates.splice(index, 1);
+                hypothesisEditingIndex = -1;
+                renderHypothesisCandidates();
+            }
+        }
+
+        function runHypothesisAnalysis() {
+            if (hypothesisCandidates.length === 0) {
+                alert('Please add at least one hypothesis to test.');
+                return;
+            }
+
+            if (hypothesisEditingIndex !== -1) {
+                alert('Please save or cancel the hypothesis you are currently editing.');
+                return;
+            }
+
+            const queryInput = document.getElementById('hypothesisQueryInput');
+            const customQuery = queryInput ? queryInput.value.trim() : '';
+            
+            if (!customQuery) {
+                alert('Please enter your hypothesis query.');
+                return;
+            }
+
+            // Get checked Hypothesis perspectives
+            const checkedBoxes = Array.from(document.querySelectorAll('.hypothesis-perspective-checkbox:checked'));
+            if (checkedBoxes.length === 0) {
+                alert('Please select at least one research perspective to analyze.');
+                return;
+            }
+            
+            const selectedRoles = checkedBoxes.map(cb => cb.dataset.role);
+
+            // Show loading state
+            document.getElementById('analyzeBtn3').disabled = true;
+            document.getElementById('analyzeBtn3').textContent = 'Testing...';
+            
+            document.getElementById('recommendationsPanel').innerHTML = `
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Testing Hypotheses</div>
+                    <div class="loading-subtext">Measuring coherence with: "${customQuery.substring(0, 60)}..."</div>
+                </div>
+            `;
+
+            document.getElementById('perspectivesPanel').innerHTML = `
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Computing Perspectives</div>
+                    <div class="loading-subtext">Analyzing from ${selectedRoles.length} viewpoints</div>
+                </div>
+            `;
+
+            document.getElementById('visualizationPanel').innerHTML = `
+                <div class="loading-state" style="padding: 20px;">
+                    <div class="spinner" style="width: 30px; height: 30px;"></div>
+                    <div class="loading-text">Generating visualization...</div>
+                </div>
+            `;
+
+            // Simulate analysis with custom query
+            setTimeout(() => {
+                // Generate mock results
+                const mockResults = selectedRoles.map(role => ({
+                    role: role,
+                    data: {
+                        all: hypothesisCandidates.map((candidate, idx) => ({
+                            text: candidate,
+                            score: 0.5 + (Math.random() * 0.4) // Random scores between 0.5 and 0.9
+                        })).sort((a, b) => b.score - a.score)
+                    }
+                }));
+
+                displayAllPerspectives(mockResults, hypothesisCandidates);
+                renderCoherenceVisualization(mockResults, hypothesisCandidates, customQuery);
+                
+                document.getElementById('analyzeBtn3').disabled = false;
+                document.getElementById('analyzeBtn3').textContent = 'Test Hypotheses';
+            }, 1500);
+        }
+
+        function renderCoherenceVisualization(results, candidates, customQuery = null) {
+            const container = document.getElementById('visualizationPanel');
+            
+            if (!results || results.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="padding: 20px;">
+                        <div class="empty-icon">📊</div>
+                        <div class="empty-title">No Data to Visualize</div>
+                        <div class="empty-description">Run analysis to see hypothesis coherence.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Calculate average scores for each candidate across perspectives
+            const candidateScores = candidates.map((candidate, idx) => {
+                const scores = results.map(r => r.data.all.find(d => d.text === candidate)?.score || 0.5);
+                const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+                return {
+                    text: candidate,
+                    score: avgScore,
+                    shortName: candidate.split(' - ')[0].substring(0, 25) + (candidate.length > 25 ? '...' : '')
+                };
+            });
+
+            // Sort by score
+            candidateScores.sort((a, b) => b.score - a.score);
+
+            // Generate positions
+            const positions = candidateScores.map((c, i) => {
+                const x = 20 + (c.score * 160);
+                const y = 30 + (i * 25) + (Math.random() * 10 - 5);
+                return {
+                    ...c,
+                    x: Math.min(180, Math.max(20, x)),
+                    y: Math.min(170, Math.max(30, y))
+                };
+            });
+
+            const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4'];
+            
+            const displayQuery = customQuery || 'Recurring 1.2kHz acoustic pattern, 3x daily at tidal cycle...';
+
+            const html = `
+                <div class="visualization-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div style="font-size: 10px; color: var(--gray); letter-spacing: 0.05em;">
+                            HYPOTHESIS COHERENCE MAP
+                        </div>
+                        <div style="font-size: 10px; color: var(--gray-light);">
+                            Distance from center = coherence with query
+                        </div>
+                    </div>
+                    
+                    <div class="visualization-grid" style="position: relative; height: 200px;">
+                        <!-- Grid lines -->
+                        <div class="grid-line" style="top: 25%;"></div>
+                        <div class="grid-line" style="top: 50%;"></div>
+                        <div class="grid-line" style="top: 75%;"></div>
+                        
+                        <!-- Y-axis labels -->
+                        <div class="grid-label" style="top: 0%;">High Distinctiveness</div>
+                        <div class="grid-label" style="top: 50%;">Medium</div>
+                        <div class="grid-label" style="top: 100%;">Low Distinctiveness</div>
+                        
+                        <!-- Query marker -->
+                        <div class="query-marker" style="left: 100px; top: 100px;"></div>
+                        
+                        <!-- Axis labels -->
+                        <div class="axis-label x">COHERENCE WITH QUERY →</div>
+                        <div class="axis-label y">HYPOTHESIS DISTINCTIVENESS</div>
+                        
+                        <!-- Dimension indicators -->
+                        <div class="dimension-label" style="left: 20px; top: 190px;">Low coherence</div>
+                        <div class="dimension-label" style="right: 10px; top: 190px;">High coherence</div>
+                        
+                        <!-- Candidate dots -->
+                        ${positions.map((cand, idx) => `
+                            <div class="candidate-dot" 
+                                 style="left: ${cand.x}px; top: ${cand.y}px; background: ${colors[idx % colors.length]};"
+                                 data-label="${cand.shortName} (${(cand.score * 100).toFixed(0)}%)">
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="viz-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--white); border: 2px solid var(--blue);"></div>
+                            <span>Your Query</span>
+                        </div>
+                        <div class="legend-item">
+                            <span>Top: ${positions[0]?.shortName}</span>
+                        </div>
+                        <div class="legend-item">
+                            <span>Range: ${(positions[0]?.score * 100).toFixed(0)}% - ${(positions[positions.length-1]?.score * 100).toFixed(0)}%</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; font-size: 11px; color: var(--gray-light); line-height: 1.6; padding: 12px; background: var(--black); border: 1px solid var(--border);">
+                        <strong style="color: var(--white);">Your Query:</strong> ${displayQuery}
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
         }
 
         // Custom Perspective Management
@@ -3202,26 +3739,11 @@
 
                 return `As ${roleInfo.name} at the FIU Aquarius Tekmara Smart Lab in Florida Keys National Marine Sanctuary, analyzing ${smartLabSensors.vessels} surface vessels within 1km radius, ${smartLabSensors.hydrocarbons}ppb hydrocarbon concentration, ${smartLabSensors.wireless}% wireless data throughput, ${smartLabSensors.auvFleet} active AUV units${context.length > 0 ? ', ' + context.join(', ') : ''} - what is the coherent autonomous system response?`;
             } else if (currentMode === 'hypothesis') {
-                // Hypothesis Lab query construction
-                const context = [];
+                // Hypothesis Lab query construction - use custom query
+                const queryInput = document.getElementById('hypothesisQueryInput');
+                const customQuery = queryInput ? queryInput.value.trim() : '';
                 
-                if (document.getElementById('hyp-ctx-tidal').checked) {
-                    context.push(`${hypothesisSensors.tidal}% tidal cycle correlation`);
-                }
-                if (document.getElementById('hyp-ctx-bio').checked) {
-                    context.push('synchronized bioluminescence spike during acoustic pattern');
-                }
-                if (document.getElementById('hyp-ctx-chemistry').checked) {
-                    context.push('water chemistry unchanged across pattern occurrences');
-                }
-                if (document.getElementById('hyp-ctx-equipment').checked) {
-                    context.push('all equipment malfunction tests negative');
-                }
-                if (document.getElementById('hyp-ctx-precision').checked) {
-                    context.push('mathematical precision in interval timing suggests non-random source');
-                }
-
-                return `As ${roleInfo.name} investigating recurring acoustic phenomenon at FIU Aquarius, observed pattern: ${hypothesisSensors.frequency}kHz frequency, ${hypothesisSensors.interval}s interval structure, ${hypothesisSensors.occurrences} occurrences per day${context.length > 0 ? ', ' + context.join(', ') : ''} - which hypothesis is most geometrically coherent with observed constraints?`;
+                return `As ${roleInfo.name} investigating: "${customQuery}" - which hypothesis is most geometrically coherent with observed constraints?`;
             } else {
                 // Aquarius human decision support query construction
                 const context = [];
@@ -3265,17 +3787,9 @@
             
             selectedRoles = checkedBoxes.map(cb => cb.dataset.role);
         } else if (currentMode === 'hypothesis') {
-            // Hypothesis Lab mode - use hypothesis candidates
-            analysisCandidate = SCENARIOS['hypothesis-lab'].candidates;
-            
-            // Get checked Hypothesis perspectives
-            const checkedBoxes = Array.from(document.querySelectorAll('.hypothesis-perspective-checkbox:checked'));
-            if (checkedBoxes.length === 0) {
-                alert('Please select at least one research perspective to analyze.');
-                return;
-            }
-            
-            selectedRoles = checkedBoxes.map(cb => cb.dataset.role);
+            // Hypothesis Lab mode - use runHypothesisAnalysis instead
+            runHypothesisAnalysis();
+            return;
         } else {
             // Aquarius mode - use current scenario candidates
             if (candidates.length === 0) {
@@ -3301,9 +3815,9 @@
         }
 
         // Show loading state
-        const analyzeBtn = currentMode === 'smartlab' ? 'analyzeBtn2' : currentMode === 'hypothesis' ? 'analyzeBtn3' : 'analyzeBtn';
+        const analyzeBtn = currentMode === 'smartlab' ? 'analyzeBtn2' : 'analyzeBtn';
         document.getElementById(analyzeBtn).disabled = true;
-        const btnText = currentMode === 'hypothesis' ? 'Testing...' : 'Analyzing...';
+        const btnText = 'Analyzing...';
         document.getElementById(analyzeBtn).textContent = btnText;
         
         document.getElementById('recommendationsPanel').innerHTML = `
@@ -3319,6 +3833,14 @@
                 <div class="spinner"></div>
                 <div class="loading-text">Computing Perspectives</div>
                 <div class="loading-subtext">This may take a moment...</div>
+            </div>
+        `;
+
+        document.getElementById('visualizationPanel').innerHTML = `
+            <div class="empty-state" style="padding: 20px;">
+                <div class="empty-icon">📊</div>
+                <div class="empty-title">Visualization Not Available</div>
+                <div class="empty-description">Switch to Hypothesis Lab mode for coherence mapping.</div>
             </div>
         `;
 
@@ -3356,7 +3878,7 @@
             `;
         } finally {
             document.getElementById(analyzeBtn).disabled = false;
-            const finalText = currentMode === 'smartlab' ? 'Run Coherence Analysis' : currentMode === 'hypothesis' ? 'Test Hypotheses' : 'Run Analysis';
+            const finalText = currentMode === 'smartlab' ? 'Run Coherence Analysis' : 'Run Analysis';
             document.getElementById(analyzeBtn).textContent = finalText;
         }
     }
