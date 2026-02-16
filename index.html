@@ -35,7 +35,15 @@
             color: var(--white);
             font-size: 13px;
             line-height: 1.5;
-            overflow: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            height: 100%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         /* Header */
@@ -127,9 +135,11 @@
 
         /* Main Layout */
         .main {
-            height: calc(100vh - 56px);
+            height: 100%;
             display: grid;
             grid-template-columns: 340px 1fr 400px;
+            overflow: hidden;
+            position: relative;
         }
 
         .container {
@@ -153,8 +163,10 @@
         .panel {
             border-right: 1px solid var(--border);
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             display: flex;
             flex-direction: column;
+            height: 100%;
         }
 
         .panel:last-child {
@@ -1056,27 +1068,46 @@
 
         /* Mobile Responsive */
         @media (max-width: 1024px) {
-            .main {
-                grid-template-columns: 1fr;
+            body {
+                position: relative;
+                height: auto;
                 overflow-y: auto;
+            }
+            
+            .main {
+                height: auto;
+                min-height: 100vh;
+                display: block;
+                overflow: visible;
             }
 
             .panel {
                 border-right: none;
                 border-bottom: 1px solid var(--border);
                 max-height: none;
+                height: auto;
+                overflow-y: visible;
             }
 
             .header {
                 padding: 0 16px;
+                flex-wrap: wrap;
+                height: auto;
+                min-height: 56px;
             }
         }
 
         @media (max-width: 1200px) {
+            body {
+                position: relative;
+                overflow-y: auto;
+            }
+            
             .main {
                 grid-template-columns: 1fr !important;
                 height: auto !important;
-                overflow-y: auto !important;
+                overflow: visible !important;
+                display: block;
             }
             
             .panel {
@@ -1100,6 +1131,7 @@
                 width: 100%;
                 justify-content: space-between;
                 font-size: 10px !important;
+                flex-wrap: wrap;
             }
             
             .mode-btn {
@@ -1153,6 +1185,14 @@
                 padding: 12px !important;
                 font-size: 14px !important;
             }
+            
+            /* Make sure modals are scrollable on mobile */
+            #addPerspectiveModal, #createScenarioModal {
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                align-items: flex-start !important;
+                padding: 20px 0;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1190,203 +1230,19 @@
             .section {
                 padding: 12px !important;
             }
-        }
-
-        @media (max-width: 1024px) {
-            .main {
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .container {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto auto;
-                display: grid;
-            }
-
-            .left-panel {
-                border-right: none;
-                border-bottom: 2px solid var(--border);
-                max-height: none;
-                overflow-y: visible;
-                height: auto;
-            }
-
-            .center-panel {
-                border-right: none;
-                border-bottom: 2px solid var(--border);
-                min-height: 50vh;
-                overflow-y: visible;
-                height: auto;
-            }
-
-            .right-panel {
-                border-right: none;
-                min-height: 50vh;
-                overflow-y: visible;
-                height: auto;
-            }
-
-            .header {
-                flex-direction: column;
-                gap: 16px;
-                padding: 16px;
-            }
-
+            
+            /* Stack buttons vertically */
             .mode-toggle {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .mode-btn {
-                flex: 1;
-                justify-content: center;
-            }
-
-            .status-bar {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .status-item {
-                font-size: 10px;
-            }
-
-            .section {
-                padding: 16px;
-            }
-
-            .section-title {
-                font-size: 10px;
-            }
-
-            .rec-card {
-                padding: 16px;
-            }
-
-            .rec-title {
-                font-size: 14px;
-            }
-
-            .perspective-card {
-                margin-bottom: 12px;
-            }
-
-            .perspective-name {
-                font-size: 12px;
-            }
-
-            .consensus-banner {
-                padding: 16px;
-            }
-
-            .consensus-stat {
-                font-size: 20px;
-            }
-
-            .checkbox-item, .radio-item {
-                padding: 14px 12px;
-                min-height: 48px;
-            }
-
-            .checkbox-label {
-                font-size: 13px;
-            }
-
-            .btn, .btn-secondary {
-                padding: 14px 20px;
-                font-size: 13px;
-                min-height: 48px;
-            }
-
-            .stepper-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-
-            .input-field, .select-field {
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            textarea.input-field {
-                min-height: 80px;
-            }
-
-            #addPerspectiveModal > div,
-            #createScenarioModal > div {
-                width: 95%;
-                max-width: none;
-                margin: 0 auto;
-            }
-
-            .select-field {
-                font-size: 14px;
-                padding: 12px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .header {
-                padding: 12px;
-            }
-
-            #modeBadge {
-                font-size: 11px;
-                padding: 6px 12px;
-            }
-
-            .mode-btn {
-                font-size: 11px;
-                padding: 8px 16px;
-            }
-
-            .status-item {
-                font-size: 9px;
-            }
-
-            .section {
-                padding: 12px;
-            }
-
-            .rec-rank {
-                width: 28px;
-                height: 28px;
-                font-size: 13px;
-            }
-
-            .rec-title {
-                font-size: 13px;
-            }
-
-            .rec-score-value {
-                font-size: 13px;
-            }
-
-            .support-badge {
-                font-size: 9px;
-                padding: 4px 8px;
-            }
-
-            .section > div[style*="grid-template-columns"] {
-                grid-template-columns: 1fr !important;
-            }
-
-            #createScenarioModal label[style*="display: flex"] {
                 flex-direction: column;
-                align-items: flex-start !important;
+                width: 100%;
             }
-
-            .consensus-stat {
-                font-size: 18px;
-            }
-
-            .perspective-emoji {
-                font-size: 16px;
+            
+            .mode-btn {
+                width: 100%;
             }
         }
 
+        /* Landscape mobile orientation */
         @media (max-width: 1024px) and (orientation: landscape) {
             .container {
                 grid-template-columns: 350px 1fr 1fr;
@@ -1410,6 +1266,7 @@
             }
         }
 
+        /* Tablet specific adjustments */
         @media (min-width: 641px) and (max-width: 1024px) {
             .container {
                 grid-template-columns: 1fr 1fr;
